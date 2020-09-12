@@ -4,6 +4,8 @@
   "description": "Space-themed image placeholder service",
   "main": "src/index.js",
   "scripts": {
+    "start": "ts-node ./src",
+    "dev": "nodemon -e ts -x ts-node ./src",
     "test": "jest"
   },
   "repository": {
@@ -18,7 +20,8 @@
   "homepage": "https://github.com/aquibm/space-holder#readme",
   "dependencies": {
     "@hapi/hapi": "^20.0.0",
-    "ts-node": "^9.0.0"
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
   },
   "devDependencies": {
     "@types/hapi__hapi": "^20.0.0",
