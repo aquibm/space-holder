@@ -1,4 +1,5 @@
 import * as Hapi from '@hapi/hapi'
+import { indexSourceFiles } from './indexer'
 
 const init = async () => {
     const server = Hapi.server({
@@ -6,11 +7,21 @@ const init = async () => {
         host: 'localhost'
     })
 
+    const sourceFiles = await indexSourceFiles()
+
     server.route({
         method: 'GET',
         path: '/ping',
         handler: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
             return h.response('pong')
+        }
+    })
+
+    server.route({
+        method: 'GET',
+        path: '/index',
+        handler: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
+            return h.response(sourceFiles)
         }
     })
 
