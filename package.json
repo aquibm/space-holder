@@ -1,0 +1,19 @@
+{
+  "name": "space-holder",
+  "version": "1.0.0",
+  "description": "Space-themed image placeholder service",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aquibm/space-holder.git"
+  },
+  "author": "Aquib Master <aquibmaster@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aquibm/space-holder/issues"
+  },
+  "homepage": "https://github.com/aquibm/space-holder#readme"
+}
