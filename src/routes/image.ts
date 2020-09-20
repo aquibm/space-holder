@@ -3,7 +3,13 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 import { Cache } from '../lib/cache'
 import { resize, mimeType } from '../lib/resizer'
 
-export default (sourceFiles: string[], cache: Cache) => {
+/**
+ * Returns a random image with the dimensions specified by the user
+ * 
+ * @param sourceFiles List of source image file paths
+ * @param cache The cache object
+ */
+const ImageRoute = (sourceFiles: string[], cache: Cache) => {
   const getRandomSourceFile = (): string =>
     sourceFiles[Math.floor(Math.random() * sourceFiles.length)];
 
@@ -37,3 +43,5 @@ export default (sourceFiles: string[], cache: Cache) => {
     handler,
   };
 };
+
+export default ImageRoute

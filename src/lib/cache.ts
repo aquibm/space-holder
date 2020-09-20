@@ -29,10 +29,9 @@ export class Cache {
         this.init()
     }
 
-    getCacheItemPath(itemName: string, dimensions: string, extension: string): string {
-        return path.join(cachePath, `${itemName}___${dimensions}.${extension}`)
-    }
-
+    /**
+     * Index files in the cache directory to build the internal cache map
+     */
     async init() {
         try {
             const fileNames = await readdir(cachePath)
@@ -51,6 +50,14 @@ export class Cache {
         }
     }
 
+    /**
+     * Add an image to the cache
+     * 
+     * @param imageName The name of the image, eg: 'space-copter.png'
+     * @param width The width of the image
+     * @param height The height of the image
+     * @param buffer The image data
+     */
     async add(imageName: string, width: number, height: number, buffer: Buffer): Promise<void> {
         try {
             const [name, extension] = imageName.split('.')
@@ -68,6 +75,14 @@ export class Cache {
         }
     }
 
+    /**
+     * Attempt to get an image from the cache. Will throw a CacheError if the
+     * image does not exist.
+     * 
+     * @param imageName Name of the image, eg: 'space-copter.png'
+     * @param width Desired width
+     * @param height Desired height
+     */
     async get(imageName: string, width: number, height: number): Promise<Buffer> {
         try {
             const [name, extension] = imageName.split('.')
@@ -84,5 +99,9 @@ export class Cache {
         } catch(error) {
             throw error
         }
+    }
+
+    private getCacheItemPath(itemName: string, dimensions: string, extension: string): string {
+        return path.join(cachePath, `${itemName}___${dimensions}.${extension}`)
     }
 }
