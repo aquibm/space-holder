@@ -14,3 +14,7 @@ Weekend project to build a space-themed image placholder service.
 ## Images
 
 All images used are in the public domain and provided by Nasa / JPL
+
+## License
+
+[MIT © Aquib Master](license.md)
