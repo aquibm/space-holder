@@ -11,5 +11,5 @@ const readdir = promisify(fs.readdir)
  */
 export const indexSourceFiles = async (): Promise<string[]> => {
     const files = await readdir(sourceImagePath)
-    return files.map(fileName => path.join(sourceImagePath, fileName))
+    return files.map((fileName) => path.join(sourceImagePath, fileName))
 }

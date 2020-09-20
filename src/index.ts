@@ -10,7 +10,7 @@ import Image from './routes/image'
 const init = async () => {
     const server = Hapi.server({
         port: 8080,
-        host: 'localhost'
+        host: 'localhost',
     })
 
     const sourceFiles = await indexSourceFiles()
@@ -23,7 +23,7 @@ const init = async () => {
     console.log(`space-holder server running on ${server.info.uri}`)
 }
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
     console.log(err)
     process.exit(1)
 })

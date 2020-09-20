@@ -8,5 +8,5 @@ export default () => ({
     path: '/ping',
     handler: async (request: Request, h: ResponseToolkit) => {
         return h.response('pong')
-    }
+    },
 })

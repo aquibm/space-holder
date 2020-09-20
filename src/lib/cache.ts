@@ -36,41 +36,50 @@ export class Cache {
         try {
             const fileNames = await readdir(cachePath)
 
-            fileNames.forEach(fileName => {
+            fileNames.forEach((fileName) => {
                 const [file, extension] = fileName.split('.')
                 const [name, dimensions] = file.split('___')
 
                 this.cache[name] = {
                     ...(this.cache[name] || {}),
-                    [dimensions]: true
+                    [dimensions]: true,
                 }
             })
-        } catch(error) {
+        } catch (error) {
             console.log(error)
         }
     }
 
     /**
      * Add an image to the cache
-     * 
+     *
      * @param imageName The name of the image, eg: 'space-copter.png'
      * @param width The width of the image
      * @param height The height of the image
      * @param buffer The image data
      */
-    async add(imageName: string, width: number, height: number, buffer: Buffer): Promise<void> {
+    async add(
+        imageName: string,
+        width: number,
+        height: number,
+        buffer: Buffer
+    ): Promise<void> {
         try {
             const [name, extension] = imageName.split('.')
             const dimensions = `${width}x${height}`
-            const absolutePath = this.getCacheItemPath(name, dimensions, extension)
+            const absolutePath = this.getCacheItemPath(
+                name,
+                dimensions,
+                extension
+            )
 
             await writeFile(absolutePath, buffer)
 
             this.cache[name] = {
                 ...(this.cache[name] || {}),
-                [dimensions]: true
+                [dimensions]: true,
             }
-        } catch(error) {
+        } catch (error) {
             throw error
         }
     }
@@ -78,30 +87,42 @@ export class Cache {
     /**
      * Attempt to get an image from the cache. Will throw a CacheError if the
      * image does not exist.
-     * 
+     *
      * @param imageName Name of the image, eg: 'space-copter.png'
      * @param width Desired width
      * @param height Desired height
      */
-    async get(imageName: string, width: number, height: number): Promise<Buffer> {
+    async get(
+        imageName: string,
+        width: number,
+        height: number
+    ): Promise<Buffer> {
         try {
             const [name, extension] = imageName.split('.')
             const dimensions = `${width}x${height}`
             const exists = this.cache[imageName] && this.cache[name][dimensions]
-            const absolutePath = this.getCacheItemPath(name, dimensions, extension)
+            const absolutePath = this.getCacheItemPath(
+                name,
+                dimensions,
+                extension
+            )
 
-            if(!exists) {
+            if (!exists) {
                 throw new CacheError('cache-miss')
             }
 
             const buffer = await readFile(absolutePath)
             return buffer
-        } catch(error) {
+        } catch (error) {
             throw error
         }
     }
 
-    private getCacheItemPath(itemName: string, dimensions: string, extension: string): string {
+    private getCacheItemPath(
+        itemName: string,
+        dimensions: string,
+        extension: string
+    ): string {
         return path.join(cachePath, `${itemName}___${dimensions}.${extension}`)
     }
 }
