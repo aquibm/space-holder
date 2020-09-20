@@ -9,3 +9,5 @@ export const resize = async (imagePath: string, width: number, height: number): 
         throw error
     }
 }
+
+export const mimeType = Jimp.MIME_JPEG

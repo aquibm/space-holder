@@ -29,7 +29,7 @@ export class Cache {
 
     async init() {
         try {
-            const cacheDir = path.join(__dirname, '..', '.cache')
+            const cacheDir = path.join(path.dirname(require.main!.filename!), '..', '.cache')
             const fileNames = await readdir(cacheDir)
 
             fileNames.forEach(fileName => {
@@ -50,7 +50,7 @@ export class Cache {
         try {
             const [name, extension] = imageName.split('.')
             const dimensions = `${width}x${height}`
-            const absolutePath = path.join(__dirname, '..', '.cache', `${name}___${dimensions}.${extension}`)
+            const absolutePath = path.join(path.dirname(require.main!.filename!), '..', '.cache', `${name}___${dimensions}.${extension}`)
 
             await writeFile(absolutePath, buffer)
 
@@ -68,7 +68,7 @@ export class Cache {
             const [name, extension] = imageName.split('.')
             const dimensions = `${width}x${height}`
             const exists = this.cache[imageName] && this.cache[name][dimensions]
-            const absolutePath = path.join(__dirname, '..', '.cache', `${name}___${dimensions}.${extension}`)
+            const absolutePath = path.join(path.dirname(require.main!.filename!), '..', '.cache', `${name}___${dimensions}.${extension}`)
 
             if(!exists) {
                 throw new CacheError('cache-miss')
