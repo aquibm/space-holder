@@ -1,3 +1,5 @@
+require('dotenv').config({ path: '.env' })
+
 import * as Hapi from '@hapi/hapi'
 
 import { Cache } from './lib/cache'
@@ -9,7 +11,7 @@ import Image from './routes/image'
 
 const init = async () => {
     const server = Hapi.server({
-        port: 8080,
+        port: process.env.SERVER_PORT,
         host: 'localhost',
     })
 
