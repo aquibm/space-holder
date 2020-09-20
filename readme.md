@@ -10,3 +10,7 @@ Weekend project to build a space-themed image placholder service.
 | ------------------- | ------------------------------------------------------------------- |
 | /ping               | Responds with 'pong' if the server is operational                   |
 | /{width?}/{height?} | Responds with a random image with the specified optional dimensions |
+
+## Images
+
+All images used are in the public domain and provided by Nasa / JPL
