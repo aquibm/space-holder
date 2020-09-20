@@ -32,22 +32,53 @@ const parseDimensions = (dimensions: string | undefined): [number, number] => {
  * @param cache The cache object
  */
 const ImageRoute = (sourceFiles: string[], cache: Cache) => {
+    const optimisticallyGetImage = async (
+        imageName: string,
+        imagePath: string,
+        width: number,
+        height: number,
+        useCache: boolean = true
+    ): Promise<Buffer> => {
+        try {
+            let imageBuffer: Buffer
+
+            if (useCache) {
+                imageBuffer = await cache.get(imageName, width, height)
+            } else {
+                imageBuffer = await resize(imagePath, width, height)
+                cache.add(imageName, width, height, imageBuffer)
+            }
+
+            return imageBuffer
+        } catch (error) {
+            if (error.name === 'CacheError') {
+                return optimisticallyGetImage(
+                    imageName,
+                    imagePath,
+                    width,
+                    height,
+                    false
+                )
+            }
+
+            throw error
+        }
+    }
+
     const handler = async (request: Request, h: ResponseToolkit) => {
         const imagePath = getRandomSourceFile(sourceFiles)
         const imageName = getImageName(imagePath)
 
         const [width, height] = parseDimensions(request.params.dimensions)
 
-        try {
-            const imageBuffer = await cache.get(imageName, width, height)
-            return h.response(imageBuffer).type(mimeType)
-        } catch (error) {
-            if (error.name === 'CacheError') {
-                const imageBuffer = await resize(imagePath, width, height)
-                cache.add(imageName, width, height, imageBuffer)
-                return h.response(imageBuffer).type(mimeType)
-            }
-        }
+        const imageBuffer = await optimisticallyGetImage(
+            imageName,
+            imagePath,
+            width,
+            height
+        )
+
+        return h.response(imageBuffer).type(mimeType)
     }
 
     return {
