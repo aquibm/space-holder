@@ -1,4 +1,5 @@
 import { Request, ResponseToolkit } from '@hapi/hapi'
+import { basename } from 'path'
 
 import { Cache } from '../lib/cache'
 import { resize, mimeType } from '../lib/resizer'
@@ -7,8 +8,7 @@ const getRandomSourceFile = (sourceFiles: string[]): string =>
     sourceFiles[Math.floor(Math.random() * sourceFiles.length)]
 
 const getImageName = (imagePath: string): string => {
-    const parts = imagePath.split('\\')
-    return parts[parts.length - 1]
+    return basename(imagePath)
 }
 
 const parseDimensions = (dimensions: string | undefined): [number, number] => {
