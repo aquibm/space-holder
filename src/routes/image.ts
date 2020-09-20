@@ -11,6 +11,20 @@ const getImageName = (imagePath: string): string => {
     return parts[parts.length - 1]
 }
 
+const parseDimensions = (dimensions: string | undefined): [number, number] => {
+    let width = 480,
+        height = 480
+
+    if (dimensions) {
+        const [userWidth, userHeight] = dimensions.split('/')
+
+        width = Number(userWidth) || width
+        height = Number(userHeight) || width
+    }
+
+    return [width, height]
+}
+
 /**
  * Returns a random image with the dimensions specified by the user
  *
@@ -22,8 +36,7 @@ const ImageRoute = (sourceFiles: string[], cache: Cache) => {
         const imagePath = getRandomSourceFile(sourceFiles)
         const imageName = getImageName(imagePath)
 
-        const width = Number(request.params.width) || 480
-        const height = Number(request.params.height) || width
+        const [width, height] = parseDimensions(request.params.dimensions)
 
         try {
             const imageBuffer = await cache.get(imageName, width, height)
@@ -39,7 +52,7 @@ const ImageRoute = (sourceFiles: string[], cache: Cache) => {
 
     return {
         method: 'GET',
-        path: '/{width}/{height}',
+        path: '/{dimensions*}',
         handler,
     }
 }
