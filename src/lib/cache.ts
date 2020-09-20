@@ -7,6 +7,8 @@ import { cachePath } from './directory'
 const writeFile = promisify(fs.writeFile)
 const readFile = promisify(fs.readFile)
 const readdir = promisify(fs.readdir)
+const exists = promisify(fs.exists)
+const mkdir = promisify(fs.mkdir)
 
 type CacheMap = {
     [imageName: string]: {
@@ -34,6 +36,8 @@ export class Cache {
      */
     async init() {
         try {
+            await this.createCacheDirIfNotExists()
+
             const fileNames = await readdir(cachePath)
 
             fileNames.forEach((fileName) => {
@@ -115,6 +119,14 @@ export class Cache {
             return buffer
         } catch (error) {
             throw error
+        }
+    }
+
+    private async createCacheDirIfNotExists(): Promise<void> {
+        const cacheDirExists = await exists(cachePath)
+
+        if (!cacheDirExists) {
+            await mkdir(cachePath)
         }
     }
 
